@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+
+  <title>Static App</title>
+
+  <style>
+    .button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <button class="button" type="button" onclick="onFinish()">Finish App</button>
+    <button class="button" type="button" onclick="onPay()">Pay</button>
+  </div>
+
+  <script src="https://unpkg.com/@terra-js/web-bridge@0.0.1/bundle/web-bridge.js"></script>
+  <script src="https://unpkg.com/@terra-js/app@0.0.1/bundle/terra.js"></script>
+  <script src="https://unpkg.com/@terra-js/payment-kit@0.0.1/bundle/payment-kit.js"></script>
+
+  <script>
+    function onFinish() {
+      terra.finish().then(result => {
+        //
+      })
+    }
+
+    function onPay() {
+      paymentKit.pay({
+        merchantCode: "MERCHANT_TEST",
+        orderCode: "order-code-123",
+        amount: 10000,
+        shouldShowPaymentResultScreen: false
+      }).then(result => {
+        switch (result.resultCode) {
+          case 'succeeded':
+            alert(`Payment succeeded: ${result.data.transactionCode}`)
+            break;
+          case 'failed':
+            alert(`Payment failed: ${result.error.message}`)
+            break;
+          case 'canceled':
+            alert(`Payment canceled`)
+            break;
+          default:
+            alert(JSON.stringify(result))
+        }
+      })
+    }
+
+  </script>
+</body>
+
+</html>
