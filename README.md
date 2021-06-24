@@ -23,40 +23,76 @@ To running a static web app, we need to create a local server for serving the st
 
 ## Features
 
-### Payment
+Check out more details at [static web example](/js-apps/static-web/index.html).
+
+### Paying for a bill
 
 ```html
 <body>
-  <!-- Insert these scripts at the bottom of the HTML, but before you use PaymentKit -->
+  <!-- Insert these scripts at the bottom of the HTML, but before you use BillingKit -->
 
-  <script src="https://unpkg.com/@terra-js/web-bridge@0.0.1/bundle/web-bridge.js"></script>
-  <script src="https://unpkg.com/@terra-js/payment-kit@0.0.1/bundle/payment-kit.js"></script>
+  <script src="https://unpkg.com/@terra-js/web-bridge@0.1.0-alpha.5/bundle/web-bridge.js"></script>
+  <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.1/bundle/billing-kit.js"></script>
 
-  <!-- Previously loaded PaymentKit SDK -->
+  <!-- Previously loaded Billing SDK -->
   <script>
-    function onPay() {
-      paymentKit
-        .pay({
-          merchantCode: 'MERCHANT_TEST',
-          orderCode: 'order-code-123',
-          amount: 10000,
-          shouldShowPaymentResultScreen: false,
-        })
-        .then((result) => {
-          switch (result.resultCode) {
-            case 'succeeded':
-              alert(`Payment succeeded: ${result.data.transactionCode}`);
-              break;
-            case 'failed':
-              alert(`Payment failed: ${result.error.message}`);
-              break;
-            case 'canceled':
-              alert(`Payment canceled`);
-              break;
-            default:
-              alert(JSON.stringify(result));
-          }
-        });
+    function onPayForBill() {
+      const billingRequest = {
+        respCode: 'respCode',
+        trace: 'trace',
+        serviceCode: '000010',
+        providerCode: '196000',
+        customerCode: 'PB17010000002',
+        senderInfo: 'PB17010000002',
+        bankCode: '950012',
+        channel: '6015',
+        accountNo: '',
+        amount: 10000,
+        customerName: 'CustomerName',
+        address: 'Address',
+        monthlyFee: '[17 2/2013 719000][17414437 2/2013 1000000]',
+        addData: undefined,
+        vnpayDateTime: '20210623110126',
+        localDateTime: '20210623105143',
+        sign: 'sign',
+      };
+      const paymentOptions = {
+        shouldShowPaymentResultScreen: true,
+      };
+
+      billingKit.payForBill(billingRequest, paymentOptions).then((result) => {
+        switch (result.resultCode) {
+          case 'succeeded':
+            alert(`Payment succeeded`);
+            break;
+          case 'failed':
+            alert(`Payment failed: ${JSON.stringify(result.error)}`);
+            break;
+          case 'canceled':
+            alert(`Payment canceled`);
+            break;
+          default:
+            alert(JSON.stringify(result));
+        }
+      });
+    }
+  </script>
+</body>
+```
+
+### Finishing the web app
+
+```html
+<body>
+  <!-- Insert these scripts at the bottom of the HTML, but before you use TerraKit -->
+
+  <script src="https://unpkg.com/@terra-js/web-bridge@0.1.0-alpha.5/bundle/web-bridge.js"></script>
+  <script src="https://unpkg.com/@terra-js/terra-kit@0.1.0-alpha.4/bundle/terra.js"></script>
+
+  <!-- Previously loaded TerraKit SDK -->
+  <script>
+    function onFinish() {
+      terraKit.finish();
     }
   </script>
 </body>

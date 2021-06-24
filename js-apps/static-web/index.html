@@ -28,41 +28,58 @@
 <body>
   <div id="root">
     <button class="button" type="button" onclick="onFinish()">Finish App</button>
-    <button class="button" type="button" onclick="onPay()">Pay</button>
+    <button class="button" type="button" onclick="onPayForBill()">Pay for bill</button>
   </div>
 
-  <script src="https://unpkg.com/@terra-js/web-bridge@0.0.1/bundle/web-bridge.js"></script>
-  <script src="https://unpkg.com/@terra-js/app@0.0.1/bundle/terra.js"></script>
-  <script src="https://unpkg.com/@terra-js/payment-kit@0.0.1/bundle/payment-kit.js"></script>
+  <script src="https://unpkg.com/@terra-js/web-bridge@0.1.0-alpha.5/bundle/web-bridge.js"></script>
+  <script src="https://unpkg.com/@terra-js/terra-kit@0.1.0-alpha.4/bundle/terra.js"></script>
+  <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.1/bundle/billing-kit.js"></script>
 
   <script>
     function onFinish() {
-      terra.finish().then(result => {
-        //
-      })
+      terraKit.finish()
     }
 
-    function onPay() {
-      paymentKit.pay({
-        merchantCode: "MERCHANT_TEST",
-        orderCode: "order-code-123",
+    function onPayForBill() {
+      const billingRequest = {
+        respCode: 'respCode',
+        trace: 'trace',
+        serviceCode: '000010',
+        providerCode: '196000',
+        customerCode: 'PB17010000002',
+        senderInfo: 'PB17010000002',
+        bankCode: '950012',
+        channel: '6015',
+        accountNo: '',
         amount: 10000,
-        shouldShowPaymentResultScreen: false
-      }).then(result => {
+        customerName: 'CustomerName',
+        address: 'Address',
+        monthlyFee: '[17 2/2013 719000][17414437 2/2013 1000000]',
+        addData: undefined,
+        vnpayDateTime: '20210623110126',
+        localDateTime: '20210623105143',
+        sign: 'sign',
+      };
+      const paymentOptions = {
+        shouldShowPaymentResultScreen: true,
+      };
+
+      billingKit.payForBill(billingRequest, paymentOptions).then((result) => {
         switch (result.resultCode) {
           case 'succeeded':
-            alert(`Payment succeeded: ${result.data.transactionCode}`)
+            alert(`Payment succeeded`);
             break;
           case 'failed':
-            alert(`Payment failed: ${result.error.message}`)
+            alert(`Payment failed: ${JSON.stringify(result.error)}`);
             break;
           case 'canceled':
-            alert(`Payment canceled`)
+            alert(`Payment canceled`);
             break;
           default:
-            alert(JSON.stringify(result))
+            alert(JSON.stringify(result));
         }
-      })
+      });
+
     }
 
   </script>
