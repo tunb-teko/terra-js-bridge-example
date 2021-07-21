@@ -31,7 +31,7 @@ Check out more details at [static web example](/js-apps/static-web/index.html).
 <body>
   <!-- Insert these scripts at the bottom of the HTML, but before you use BillingKit -->
 
-  <script src="https://unpkg.com/@terra-js/web-bridge@0.1.0-alpha.5/bundle/web-bridge.js"></script>
+  <script src="https://unpkg.com/@terra-js/web-bridge@0.0.3/bundle/web-bridge.js"></script>
   <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.1/bundle/billing-kit.js"></script>
 
   <!-- Previously loaded Billing SDK -->
@@ -63,16 +63,19 @@ Check out more details at [static web example](/js-apps/static-web/index.html).
       billingKit.payForBill(billingRequest, paymentOptions).then((result) => {
         switch (result.resultCode) {
           case 'succeeded':
-            alert(`Payment succeeded`);
+            // go to the home page or do something else
             break;
           case 'failed':
-            alert(`Payment failed: ${JSON.stringify(result.error)}`);
+            // ignore 'ProcessOrderFail' error
+            if (result.error.code != 'ProcessOrderFail') {
+              // go to the home page or do something else
+            }
             break;
           case 'canceled':
-            alert(`Payment canceled`);
+            // should ignore 'canceled' result
             break;
           default:
-            alert(JSON.stringify(result));
+          // should ignore unhandled result
         }
       });
     }

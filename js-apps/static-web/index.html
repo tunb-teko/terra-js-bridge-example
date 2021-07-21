@@ -27,11 +27,12 @@
 
 <body>
   <div id="root">
+    <input />
     <button class="button" type="button" onclick="onFinish()">Finish App</button>
     <button class="button" type="button" onclick="onPayForBill()">Pay for bill</button>
   </div>
 
-  <script src="https://unpkg.com/@terra-js/web-bridge@0.1.0-alpha.5/bundle/web-bridge.js"></script>
+  <script src="https://unpkg.com/@terra-js/web-bridge@0.0.3/bundle/web-bridge.js"></script>
   <script src="https://unpkg.com/@terra-js/terra-kit@0.1.0-alpha.4/bundle/terra.js"></script>
   <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.1/bundle/billing-kit.js"></script>
 
@@ -67,10 +68,16 @@
       billingKit.payForBill(billingRequest, paymentOptions).then((result) => {
         switch (result.resultCode) {
           case 'succeeded':
-            alert(`Payment succeeded`);
+            // show error screen or go to the home page
+            alert('Payment succeeded');
             break;
           case 'failed':
-            alert(`Payment failed: ${JSON.stringify(result.error)}`);
+            // ignore 'ProcessOrderFail' error
+            if (result.error.code != "ProcessOrderFail") {
+              // show error screen or go to the home page
+              alert(`Payment failed: ${JSON.stringify(result.error)}`);
+            }
+
             break;
           case 'canceled':
             alert(`Payment canceled`);
