@@ -23,6 +23,7 @@ To running a static web app, we need to create a local server for serving the st
 
 - Set up to run `http://localhost:3000` on device or simualor: https://developer.chrome.com/docs/devtools/remote-debugging/local-server/
 - Start app, click `Open billing app` button.
+- Inspect WebView in Chrome: https://developer.chrome.com/docs/devtools/remote-debugging/webviews/#open_a_webview_in_devtools
 
 ## Features
 
@@ -91,7 +92,7 @@ Check out more details at [static web example](/js-apps/static-web/index.html).
 
   <!-- Previously loaded Billing SDK -->
   <script>
-    function openTransactionsHistory() {
+    function showTransactionsHistory() {
       billingKit.showTransactionsHistory();
     }
   </script>
