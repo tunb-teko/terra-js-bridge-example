@@ -15,46 +15,43 @@ To running a static web app, we need to create a local server for serving the st
 - Install `Web Server for Chrome` extension at [web-server-for-chrome](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
 - Run `Web Server for Chrome`, choose [web-static](/js-apps/static-web) folder and start server.
 
-### Running on the Super app
+# Billing
+
+## Running on the Super app
 
 - Install [Android Super app](https://drive.google.com/file/d/1watzNg0e-69CMGBDskevyFdhGCpEhWnF/view?usp=sharing) to device or emulator.
 
-- Start app, click `Open web app` button and enter the url of the web app
+- Set up to run `http://localhost:3000` on device or simualor: https://developer.chrome.com/docs/devtools/remote-debugging/local-server/
+- Start app, click `Open billing app` button.
 
 ## Features
 
 Check out more details at [static web example](/js-apps/static-web/index.html).
 
-### Paying for a bill
+### [Billing] Paying for a bill
 
 ```html
 <body>
   <!-- Insert these scripts at the bottom of the HTML, but before you use BillingKit -->
 
   <script src="https://unpkg.com/@terra-js/web-bridge@0.0.3/bundle/web-bridge.js"></script>
-  <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.1/bundle/billing-kit.js"></script>
+  <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.5/bundle/billing-kit.js"></script>
 
   <!-- Previously loaded Billing SDK -->
   <script>
     function onPayForBill() {
       const billingRequest = {
-        respCode: 'respCode',
-        trace: 'trace',
-        serviceCode: '000010',
-        providerCode: '196000',
-        customerCode: 'PB17010000002',
-        senderInfo: 'PB17010000002',
-        bankCode: '950012',
-        channel: '6015',
-        accountNo: '',
-        amount: 10000,
-        customerName: 'CustomerName',
-        address: 'Address',
-        monthlyFee: '[17 2/2013 719000][17414437 2/2013 1000000]',
-        addData: undefined,
-        vnpayDateTime: '20210623110126',
-        localDateTime: '20210623105143',
-        sign: 'sign',
+        creditAmount: 2873000,
+        customerName: 'TRAN THI MINH VIEN',
+        address: '4 TONG 1 NGAN',
+        monthlyFee: '',
+        addData: '[30062 03/2019 1180000][30062 04/2019 1693000]',
+        agenCode: 'PHONGVUDEMO',
+        svcCode: 'WATER-BILL',
+        customerCode: '30062',
+        providerCode: 'NUOC_TRANOC',
+        providerName: 'Cấp nước Trà Nóc',
+        mobileNumber: '',
       };
       const paymentOptions = {
         shouldShowPaymentResultScreen: true,
@@ -78,6 +75,24 @@ Check out more details at [static web example](/js-apps/static-web/index.html).
           // should ignore unhandled result
         }
       });
+    }
+  </script>
+</body>
+```
+
+### [Billing] Showing transactions history screen
+
+```html
+<body>
+  <!-- Insert these scripts at the bottom of the HTML, but before you use BillingKit -->
+
+  <script src="https://unpkg.com/@terra-js/web-bridge@0.0.3/bundle/web-bridge.js"></script>
+  <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.5/bundle/billing-kit.js"></script>
+
+  <!-- Previously loaded Billing SDK -->
+  <script>
+    function openTransactionsHistory() {
+      billingKit.showTransactionsHistory();
     }
   </script>
 </body>

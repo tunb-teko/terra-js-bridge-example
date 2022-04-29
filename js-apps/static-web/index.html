@@ -21,6 +21,7 @@
       font-size: 16px;
       margin: 4px 2px;
       cursor: pointer;
+      display: block;
     }
   </style>
 </head>
@@ -30,11 +31,12 @@
     <input />
     <button class="button" type="button" onclick="onFinish()">Finish App</button>
     <button class="button" type="button" onclick="onPayForBill()">Pay for bill</button>
+    <button class="button" type="button" onclick="showTransactionsHistory()">Show transactions history</button>
   </div>
 
   <script src="https://unpkg.com/@terra-js/web-bridge@0.0.3/bundle/web-bridge.js"></script>
   <script src="https://unpkg.com/@terra-js/terra-kit@0.1.0-alpha.4/bundle/terra.js"></script>
-  <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.1/bundle/billing-kit.js"></script>
+  <script src="https://unpkg.com/@terra-js/billing-kit@0.1.0-alpha.5/bundle/billing-kit.js"></script>
 
   <script>
     function onFinish() {
@@ -43,23 +45,17 @@
 
     function onPayForBill() {
       const billingRequest = {
-        respCode: 'respCode',
-        trace: 'trace',
-        serviceCode: '000010',
-        providerCode: '196000',
-        customerCode: 'PB17010000002',
-        senderInfo: 'PB17010000002',
-        bankCode: '950012',
-        channel: '6015',
-        accountNo: '',
-        amount: 10000,
-        customerName: 'CustomerName',
-        address: 'Address',
-        monthlyFee: '[17 2/2013 719000][17414437 2/2013 1000000]',
-        addData: undefined,
-        vnpayDateTime: '20210623110126',
-        localDateTime: '20210623105143',
-        sign: 'sign',
+        creditAmount: 2873000,
+        customerName: 'TRAN THI MINH VIEN',
+        address: '4 TONG 1 NGAN',
+        monthlyFee: '',
+        addData: '[30062 03/2019 1180000][30062 04/2019 1693000]',
+        agenCode: 'PHONGVUDEMO',
+        svcCode: 'WATER-BILL',
+        customerCode: '30062',
+        providerCode: 'NUOC_TRANOC',
+        providerName: 'Cấp nước Trà Nóc',
+        mobileNumber: '',
       };
       const paymentOptions = {
         shouldShowPaymentResultScreen: true,
@@ -87,6 +83,10 @@
         }
       });
 
+    }
+
+    function showTransactionsHistory() {
+      billingKit.showTransactionsHistory()
     }
 
   </script>
